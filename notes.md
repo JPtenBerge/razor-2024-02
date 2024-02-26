@@ -30,3 +30,157 @@
   - PHP
   - Java Spring
   - niet hip.
+
+## HTTP-berichten en -statuscodessen
+
+* 2xx - SUCCESS
+  - 200 OK
+  - 201 Created
+  - 204 No Content  (DELETE)
+* 3xx - REDIRECTS
+  - 301/302  temporary/permanent
+* 4xx - CLIENT ERROR
+  - 400 Bad Request
+  - 401 Unauthorized
+  - 403 Forbidden
+  - 404 Not Found
+  - 405 Method Not Allowed  (POST => ...geen POST ondersteunt)
+  - 415 Mediatype not supported  (XML => ...die geen XML kan parsen)
+  - 418 I'm a teapot
+* 5xx - SERVER ERROR
+  - 500 Internal Server Error
+  - 502 Bad Gateway
+
+anti forgery token?
+CSRF/XSRF 
+Cross Site Request Forgery
+
+```html
+<form action="https://goeddomein.nl/process">
+```
+
+`IActionResult`
+- redirect to page result
+- redirect result
+- json result
+- xml result
+- content result
+- file result
+- error result
+
+Qua HTTP-berichten:
+GET:
+- heeft GEEN body
+- DELETE ook niet
+- alles in url, maximaal 2048 karakters
+
+POST:
+- heeft een body
+  - PUT en PATCH ook
+
+Voorbeeld: loginformulier via GET of POST versturen?
+- informatie staat in de body, niet in url
+  - wachtwoord in url is niet tof. iedereen die meekijkt op je scherm kan wachtwoord zien
+  - proxy logs
+
+## Formuliervalidatie
+
+validatie implementeren:
+- out-of-the-box: data annotation validator 
+- lib: FluentValidation. voordelen:
+  - rijker: conditionele validatie
+  - meer validaties out-of-the-box
+  - unittesten
+
+## EF Core
+
+- ORM: Object-Relational Mapper
+- onderdeel van ADO.NET: data access in .NET
+  - ActiveX Data Objects
+
+Geschiedenis van manieren om naar je db te gaan:
+
+1. rechtstreeks hardcoded SQL - 2001
+  ```cs
+  using(var connection = new SqlConnection("...")) 
+  {
+    connection.Open();
+    using(var command = new SqlCommand())
+    {
+      command.CommandType = CommandType.Text;
+      command.CommandText = "SELECT * FROM klant;"; // SQL injection
+      using(var reader = command.ExecuteReader())
+      {
+        while(reader.Next())
+        {
+          reader["name"]
+          int.Parse(reader["age"])
+        }
+      }
+    }
+  }
+  ```
+2. Datasets/datatables - 2005
+  - visueel designertje voor je datamodel
+  - queries instellen bij iedere table
+  - niet heel flexibel
+  - voelde heel database-ig aan:
+    ```cs
+    foreach (var customer of CustomerTable.Fill())
+    {
+      customer.AddressRow
+    }
+    ```
+3. LINQ to SQL - 2008
+  - lijkt heel erg op wat EF Core vandaag de dag
+  - werkte enkel op SQL Server
+  - geen ondersteuning voor n:m-relaties
+4. LINQ to Entities (Entity Framework 6.4 momenteel) - 2009
+  - database first
+  - model first
+  - code first
+5. Entity Framework Core - .NET Core - 2016
+  - code first
+
+Packages:
+* `Microsoft.EntityFrameworkCore` - abstractie  DbContext
+* `Microsoft.EntityFrameworkCore.SqlServer` - queries at runtime vertalen naar SQL Server
+* `Microsoft.EntityFrameworkCore.Tools` - Visual Studio package manager console commando's: `Update-Database` `Add-Migration`
+  - heeft een dependency op die hieronder
+* `Microsoft.EntityFrameworkCore.Design` - als je `dotnet ef migrations` wil kunnen doen
+
+```sh
+dotnet ef migrations add Naam
+dotnet ef migrations script
+dotnet ef database update
+dotnet ef database revert
+```
+
+## Repositories
+
+- meeeeeeeeeeestal DB
+- kan ook voor frontend-DAL: frontend => backend
+- vooral fijn als ze waarde toevoegen, bijv. queries die *altijd* bepaalde clausules in zich moeten hebben:
+  ```cs
+  context.Customers.Where(x => !x.IsInactive)
+  ```
+
+Unit of work gaat vaak hand-in-hand met repositories en bevatten vaak repository-overstijgende persistentielogica.
+
+## Dependency injection
+
+Geen `new`, maar dat een ander stuk code laten doen: dependency injection.
+
+- 1 keer een instantie en die injecteer je wanneer je 'm nodig hebt
+- het is een vorm van Inversion of Control
+
+3 lifetimes in ASP.NET Core:
+
+```cs
+builder.Service.AddTransient<..., ...>() // altijd een nieuwe
+builder.Service.AddScoped<..., ...>() // per request een nieuwe
+builder.Service.AddSingleton<..., ...>() // 1 instance to rule them all
+```
+
+JP prefereert `.AddTransient()` ivm side effects.
+
