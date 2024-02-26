@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DemoProject.Entities;
+﻿namespace DemoProject.Entities;
 
 public class Character
 {
@@ -10,4 +7,7 @@ public class Character
     public bool IsBender { get; set; }
     public List<string>? Elements { get; set; } = new();
     public string PhotoUrl { get; set; }
+
+    public int NationId { get; set; }
+    public Nation Nation { get; set; }
 }

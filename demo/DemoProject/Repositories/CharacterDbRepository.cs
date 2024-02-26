@@ -1,5 +1,6 @@
 ﻿using DemoProject.DataAccess;
 using DemoProject.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoProject.Repositories;
 
@@ -13,7 +14,7 @@ public class CharacterDbRepository : ICharacterRepository
     
     public IEnumerable<Character> GetAll()
     {
-        return _context.Characters.ToArray();
+        return _context.Characters.Include(x => x.Nation).ToArray();
     }
 
     public void Add(Character newCharacter)

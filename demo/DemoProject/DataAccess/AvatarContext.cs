@@ -6,6 +6,8 @@ namespace DemoProject.DataAccess;
 public class AvatarContext : DbContext
 {
     public DbSet<Character> Characters { get; set; }
+    
+    public DbSet<Nation> Nations { get; set; }
 
     public AvatarContext(DbContextOptions<AvatarContext> options) : base(options)
     {

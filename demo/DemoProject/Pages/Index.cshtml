@@ -51,6 +51,10 @@
             <span asp-validation-for="NewCharacter.PhotoUrl"></span>
         </li>
         <li>
+            <label id="input-nation">Natie:</label>
+            <select asp-items="Model.NationOptions" asp-for="NewCharacter.NationId"></select>
+        </li>
+        <li>
             <button>Add character</button>
         </li>
     </ol>
@@ -69,6 +73,7 @@ else
             <th>Naam</th>
             <th>Kan benden</th>
             <th>Elementen</th>
+            <th>Natie</th>
             <th>Fotootje</th>
         </tr>
         </thead>
@@ -80,6 +85,7 @@ else
                 <td>@character.Name</td>
                 <td>@character.IsBender</td>
                 <td>@(character.Elements == null ? "niks" : string.Join(", ", character.Elements))</td>
+                <td>@character.Nation.Name</td>
                 <td>
                     <img src="@character.PhotoUrl">
                 </td>
