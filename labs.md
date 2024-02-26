@@ -19,7 +19,6 @@ We gaan een todo-applicatie maken.
 5. Associeer je todo's met een categorie, zoals huiselijk onderhoud, werk of relatiemanagement. Dit is een aparte entiteit in je database. Gebruik een `<select>` in je form. Op zoek naar een uitdaging? Associeer je todo met één OF MEER categorieën.
 
 6. Test één van je methoden op je Razor Page. Voel je vrij om te kiezen welke frameworks/libraries je hierbij inzet.
-   * Behalve Alexander. Die test de `OnPostAsync()`
 
 7. Maak een stuk middleware die alle 404-responses logt.
 
