@@ -1,4 +1,6 @@
-﻿namespace DemoProject.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DemoProject.Entities;
 
 public class Character
 {

@@ -1,13 +1,12 @@
 ﻿using DemoProject.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DemoProject.Pages;
 
-public class Index : PageModel // code-behind
+public class IndexModel : PageModel // code-behind
 {
-    public string Name { get; set; } = "JP";
-
-    public List<Character> AvatarCharacters { get; set; } = new List<Character>()
+    public static List<Character> AvatarCharacters { get; set; } = new List<Character>()
     {
         new()
         {
@@ -38,7 +37,25 @@ public class Index : PageModel // code-behind
         }
     };
 
+    [BindProperty]
+    public Character NewCharacter { get; set; }
+    
     public void OnGet()
     {
+    }
+
+    
+    
+    public IActionResult OnPost() // model binding
+    {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+        
+        Console.WriteLine($"posting 2! {NewCharacter.Name} kan benden: {NewCharacter.IsBender}");
+        NewCharacter.Id = AvatarCharacters.Max(x => x.Id) + 1;
+        AvatarCharacters.Add(NewCharacter);
+        return RedirectToPage(); // GET
     }
 }

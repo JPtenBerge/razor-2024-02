@@ -1,5 +1,7 @@
 ﻿@page
-@model DemoProject.Pages.Index
+@using DemoProject.Pages
+@model DemoProject.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = null;
@@ -18,13 +20,36 @@
 </head>
 <body>
 
-Name: @Model.Name
 
-@for (int i = 0; i < 4; i++)
-{
-    <text>i: </text>
-    @i
-}
+<form method="post">
+    <ol>
+        <li>
+            <label for="input-name">Naam:</label>
+            <input id="input-name" asp-for="NewCharacter.Name"/>
+            <span asp-validation-for="NewCharacter.Name"></span>
+        </li>
+        <li>
+            <label for="input-is-bender">Kan benden?</label>
+            <input type="checkbox" id="input-is-bender" asp-for="NewCharacter.IsBender"/>
+            <span asp-validation-for="NewCharacter.IsBender"></span>
+        </li>
+        <li>
+            <label>Elementen:</label>
+            @* <select multiple> *@
+            @*     <option>Earth</option> *@
+            @*     <option>Air</option> *@
+            @*     <option>Fire</option> *@
+            @*     <option>Water</option> *@
+            @* </select> *@
+        </li>
+        <li>
+            <label for="input-photo-url">Foto URL:</label>
+            <input type="url" id="input-photo-url" asp-for="NewCharacter.PhotoUrl"/>
+            <span asp-validation-for="NewCharacter.PhotoUrl"></span>
+        </li>
+        <li><button>Add character</button></li>
+    </ol>
+</form>
 
 <table>
     <thead>
@@ -37,15 +62,17 @@ Name: @Model.Name
     </tr>
     </thead>
     <tbody>
-    @foreach(var character in Model.AvatarCharacters)
+    @foreach (var character in IndexModel.AvatarCharacters)
     {
-    <tr>
-        <td>@character.Id</td>
-        <td>@character.Name</td>
-        <td>@character.IsBender</td>
-        <td>@(character.Elements == null ? "niks" : string.Join(", ", character.Elements))</td>
-        <td><img src="@character.PhotoUrl"></td>
-    </tr>
+        <tr>
+            <td>@character.Id</td>
+            <td>@character.Name</td>
+            <td>@character.IsBender</td>
+            <td>@(character.Elements == null ? "niks" : string.Join(", ", character.Elements))</td>
+            <td>
+                <img src="@character.PhotoUrl">
+            </td>
+        </tr>
     }
     </tbody>
 </table>
