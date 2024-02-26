@@ -22,3 +22,10 @@ We gaan een todo-applicatie maken.
 
 7. Maak een stuk middleware die alle 404-responses logt.
 
+8. Ik wil graag verschillende views voor het tonen van de todo's:
+   * Een view die alle todo's van een bepaalde categorie toont
+   * Een view die de 3 meest urgente todo's toont
+   * Een view die alle afgeronde todo's toont
+
+   Hergebruik zoveel mogelijk HTML. En maak het ook gerust een beetje mooier met een navigatiegebied zodat men makkelijker kan schakelen tussen de verschillende pagina's.
+

@@ -17,6 +17,9 @@
             max-width: 100px;
         }
     </style>
+    @* <script src="libs/jquery/jquery.js"></script> *@
+    @* <script src="libs/jquery-validate/jquery.validate.js"></script> *@
+    @* <script src="libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script> *@
 </head>
 <body>
 
@@ -47,35 +50,43 @@
             <input type="url" id="input-photo-url" asp-for="NewCharacter.PhotoUrl"/>
             <span asp-validation-for="NewCharacter.PhotoUrl"></span>
         </li>
-        <li><button>Add character</button></li>
+        <li>
+            <button>Add character</button>
+        </li>
     </ol>
 </form>
 
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Naam</th>
-        <th>Kan benden</th>
-        <th>Elementen</th>
-        <th>Fotootje</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var character in IndexModel.AvatarCharacters)
-    {
+@if (Model.AvatarCharacters == null || Model.AvatarCharacters.Count() == 0)
+{
+    <p>Geen data.</p>
+}
+else
+{
+    <table>
+        <thead>
         <tr>
-            <td>@character.Id</td>
-            <td>@character.Name</td>
-            <td>@character.IsBender</td>
-            <td>@(character.Elements == null ? "niks" : string.Join(", ", character.Elements))</td>
-            <td>
-                <img src="@character.PhotoUrl">
-            </td>
+            <th>ID</th>
+            <th>Naam</th>
+            <th>Kan benden</th>
+            <th>Elementen</th>
+            <th>Fotootje</th>
         </tr>
-    }
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+        @foreach (var character in Model.AvatarCharacters)
+        {
+            <tr>
+                <td>@character.Id</td>
+                <td>@character.Name</td>
+                <td>@character.IsBender</td>
+                <td>@(character.Elements == null ? "niks" : string.Join(", ", character.Elements))</td>
+                <td>
+                    <img src="@character.PhotoUrl">
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
 </body>
 </html>
