@@ -1,0 +1,54 @@
+﻿@page
+@model DemoProject.Pages.Index
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Beste webapp aller tijden</title>
+    <style>
+        td img {
+            max-width: 100px;
+        }
+    </style>
+</head>
+<body>
+
+Name: @Model.Name
+
+@for (int i = 0; i < 4; i++)
+{
+    <text>i: </text>
+    @i
+}
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Naam</th>
+        <th>Kan benden</th>
+        <th>Elementen</th>
+        <th>Fotootje</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach(var character in Model.AvatarCharacters)
+    {
+    <tr>
+        <td>@character.Id</td>
+        <td>@character.Name</td>
+        <td>@character.IsBender</td>
+        <td>@(character.Elements == null ? "niks" : string.Join(", ", character.Elements))</td>
+        <td><img src="@character.PhotoUrl"></td>
+    </tr>
+    }
+    </tbody>
+</table>
+
+</body>
+</html>
