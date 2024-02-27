@@ -2,6 +2,7 @@ using System.Reflection;
 using DemoProject.Entities;
 using DemoProject.Pages;
 using DemoProject.Repositories;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moq;
@@ -59,7 +60,9 @@ public class IndexModelTests
         _mockCharacterRepository.Verify(x => x.Add(It.IsAny<Character>()), Times.Once());
         _mockCharacterRepository.Verify(x => x.GetAll(), Times.Never());
         _mockNationRepository.Verify(x => x.GetAll(), Times.Never());
-        Assert.IsInstanceOfType<RedirectToPageResult>(result);
+
+        result.Should().BeOfType<RedirectToPageResult>();
+        // Assert.IsInstanceOfType<RedirectToPageResult>(result);
     }
     
     [TestMethod]
