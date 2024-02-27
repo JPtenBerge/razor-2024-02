@@ -42,7 +42,7 @@ public class IndexModelTests
     [TestMethod]
     public void OnPost_ValidModel_TodoAdded() // given-when-then
     {
-        
+        // _mockCharacterRepository.Verify(x => x.Add(It.IsAny<Character>()), Times.Once());
     }
     
     [TestMethod]
@@ -51,3 +51,4 @@ public class IndexModelTests
         
     }
 }
+
