@@ -156,6 +156,13 @@ dotnet ef database update
 dotnet ef database revert
 ```
 
+Kijk eens naar de [SQL Server Profiler](https://learn.microsoft.com/en-us/sql/tools/sql-server-profiler/sql-server-profiler?view=sql-server-ver16):
+- Hoe complexer de query, hoe lastiger het vertalen wordt en soms onjuist gaat
+  - Dit kan ook per EF Core-adapter verschillen, dus als je morgen met een EF Core MySQL-adapter te maken hebt in plaats van eentje voor SQL Server
+- Om de performance te verbeteren door bijv. de query te gebruiken om een query execution plan naast te houden
+
+Profiler komt standaard mee met SQL Server Developer Edition.
+
 ## Repositories
 
 - meeeeeeeeeeestal DB
