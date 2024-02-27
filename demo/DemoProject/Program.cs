@@ -1,5 +1,6 @@
 using DemoProject.DataAccess;
 using DemoProject.Entities;
+using DemoProject.Middleware;
 using DemoProject.Repositories;
 using DemoProject.Validators;
 using FluentValidation;
@@ -12,8 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // dependency injection
 // grote bouwblokken
 
-
-
+builder.Services.AddTransient<MijnExceptionLoggingMiddleware>();
 builder.Services.AddTransient<IValidator<Character>, CharacterValidator>();
 // builder.Services.AddSingleton<ICharacterRepository, CharacterRepository>();
 builder.Services.AddTransient<ICharacterRepository, CharacterDbRepository>();
@@ -32,7 +32,10 @@ var app = builder.Build();
 
 // dit is wat er ieder request moet gebeuren
 
-app.UseStaticFiles(); // defaults to wwwroot/
+app
+    .UseDeveloperExceptionPage()
+    .UseMijnExceptionLoggingMiddleware() // extension method
+    .UseStaticFiles(); // defaults to wwwroot/
 
 app.MapRazorPages(); // Pages/
 
