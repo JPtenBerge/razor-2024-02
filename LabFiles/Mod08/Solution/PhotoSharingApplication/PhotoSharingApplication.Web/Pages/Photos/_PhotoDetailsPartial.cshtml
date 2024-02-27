@@ -1,0 +1,15 @@
+﻿@using PhotoSharingApplication.Core.Entities
+@model Photo
+
+<div class="card card-tilted">
+	<img src="/photos/image/@Model.Id" class="card-img-top" alt="@Model.Title"/>
+	<div class="card-body">
+		<h5 class="card-title">@Model.Title</h5>
+		<p class="card-text">@Model.Description</p>
+	</div>
+	@if (ViewData["ShowDetailsButton"] is bool showDetailsButton && showDetailsButton) { 
+	<div class="card-footer">
+		<a asp-page="./Details" asp-route-id="@Model.Id" class="card-link">Details</a>
+	</div>
+	}
+</div>

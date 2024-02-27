@@ -1,0 +1,12 @@
+﻿@using PhotoSharingApplication.Core.Entities
+@model Photo
+
+<div>
+	<h3>@Model.Title</h3>
+	<p>@Model.Id</p>
+	<p>@Model.Description</p>
+	<img src="/photos/image/@Model.Id" />
+	@if (ViewData["ShowDetailsButton"] is bool showDetailsButton && showDetailsButton) { 
+		<a asp-page="./Details" asp-route-id="@Model.Id">Details</a>
+	}
+</div>
