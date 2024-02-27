@@ -256,3 +256,42 @@ Mockframeworks
 - FakeItEasy <== guidance framework
 - EasyMock
 
+Laatste dingetje: [FluentAssertions](https://fluentassertions.com/) is erg tof zodra je complexere assertions krijgt (inhoudelijke objecten of collecties bijv.)
+
+## Middleware
+
+- zit een beetje tussen client en server
+- verwerkingsstap bij het verwerken van een request
+- Pipeline pattern
+
+```cs
+// meeste middlewares beginnen met .Use
+app.UseLogger();
+app.UseStaticFiles();
+app.UseDeveloperExceptionPage();
+app.UseAuthentication(); // bearer token   cookie
+app.UseAuthorization();
+app.UseHsts();
+app.UseHttpsRedirection();
+app.UseAntiForgeryToken();
+app.UseStatusCodePages();
+
+// sommige beginnen met .Map
+app.MapRazorPages();
+app.MapControllers();
+app.MapHub<>();
+```
+
+Is meestal chainable:
+
+```cs
+app.UseLogger()
+  .UseStaticFiles()
+  .UseDeveloperExceptionPage()
+  .UseAuthentication() // bearer token   cookie
+  .UseAuthorization()
+  .UseHsts()
+  .UseHttpsRedirection()
+  .UseAntiForgeryToken()
+  .UseStatusCodePages();
+```
