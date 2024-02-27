@@ -163,6 +163,15 @@ Kijk eens naar de [SQL Server Profiler](https://learn.microsoft.com/en-us/sql/to
 
 Profiler komt standaard mee met SQL Server Developer Edition.
 
+Wat queries betreft, positie van `.ToList()`/`.ToArray()`/`.ForEach()` maakt een hoop uit:
+
+```cs
+context.Customers.ToList().Where(x => x.Name.StartsWith("J"));
+context.Customers.Where(x => x.Name.StartsWith("J")).ToList();
+```
+
+Bij de een doet de database het filteren, bij de ander worden er mogelijk miljarden records in-memory geladen en doet de .NET runtime het filteren.
+
 ## Repositories
 
 - meeeeeeeeeeestal DB
