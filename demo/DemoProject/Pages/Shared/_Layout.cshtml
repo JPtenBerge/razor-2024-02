@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Beste webapp aller tijden</title>
+    <style>
+        td img {
+            max-width: 100px;
+        }
+    </style>
+    @* <script src="libs/jquery/jquery.js"></script> *@
+    @* <script src="libs/jquery-validate/jquery.validate.js"></script> *@
+    @* <script src="libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script> *@
+</head>
+<body>
+
+<nav>
+    <ol>
+        <li>
+            <a href="/index">Index</a>
+        </li>
+        <li>
+            <a href="/datetimetest">Datetime test</a>
+        </li>
+        <li>
+            <a href="/details/14">Details 14</a>
+        </li>
+        <li>
+            <a href="/details/hoi">Details hoi</a>
+        </li>
+        <li>
+            <a href="/error">Errorrrr</a>
+        </li>
+    </ol>
+</nav>
+
+<main>
+    @RenderBody()
+</main>
+
+</body>
+</html>

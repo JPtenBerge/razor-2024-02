@@ -1,28 +1,5 @@
 ﻿@page
-@using DemoProject.Pages
-@model DemoProject.Pages.IndexModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>Beste webapp aller tijden</title>
-    <style>
-        td img {
-            max-width: 100px;
-        }
-    </style>
-    @* <script src="libs/jquery/jquery.js"></script> *@
-    @* <script src="libs/jquery-validate/jquery.validate.js"></script> *@
-    @* <script src="libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script> *@
-</head>
-<body>
-
+@model IndexModel
 
 <form method="post">
     <ol>
@@ -94,5 +71,4 @@ else
         </tbody>
     </table>
 }
-</body>
-</html>
+

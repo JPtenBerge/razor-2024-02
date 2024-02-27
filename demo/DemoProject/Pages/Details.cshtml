@@ -1,0 +1,13 @@
+﻿@page "{id:int}"
+@model Details
+
+<partial name="Loading" model="@("klanten")" />
+
+
+<partial name="Loading" model="@("producten")" />
+
+
+<a asp-page="Datetimetest">Klik hier</a>
+
+<a asp-page-handler="Register" asp-route-hoi="iets">Register</a> |
+<a asp-page-handler="Subscribe">Subscribe</a> |  
