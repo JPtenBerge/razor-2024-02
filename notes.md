@@ -184,3 +184,75 @@ builder.Service.AddSingleton<..., ...>() // 1 instance to rule them all
 
 JP prefereert `.AddTransient()` ivm side effects.
 
+
+## Unittesten
+
+Testsoorten (zie ook testpiramide):
+
+* unittesten
+  - heel snel
+  - heel klein stukje code
+* integration testing
+  - niet zo heel snel
+  - integratie met database
+  - integratie met API
+  - integratie tussen componenten
+  - HTML renderen
+  - code aan het aanspreken
+* UI testing / end-to-end testing
+  - heel langzaam
+  - browser aansturen
+  - Playwright (Microsoft)
+* manual testing
+- zeer langzaam
+- zeer duur
+
+Wat is een unit?
+* `methodA()` roept `methodB()` in zelfde class aan?
+* `methodA()` roept `Math.random()` uit het .NET Framework aan?
+* `methodA()` roept een repository aan?
+* `methodA()` gaat interactie aan met een database?
+* `methodA()` doet een API-call naar Azure?
+
+zou je private moeten testen?
+- ja, maar niet rechtstreeks. via de public API
+- soms wel rechtstreeks als de situatie zich daarvoor leent. het is niet verboden.
+  - met reflection
+  - maar liever niet
+- zie ook black box vs white box testing
+
+```cs
+var methods = sut.GetType().GetMethods(BindingFlags.Instance & BindingFlags.NonPublic);
+var method = methods.Single(x => x.Name == "GetData");
+method.Invoke(obj);
+```
+
+testframeworks:
+- MSTest `[TestMethod]`  `Assert.AreEqual()`   <=== guidance framework
+- NUnit `[Test]`
+- xUnit `[Fact]`/`[Theory]`  `Assert.Equals()`
+
+Vroeger wel relevante verschillen, maar zijn behoorlijk naar elkaar toe gegroeid. [Data-driven tests](https://learn.microsoft.com/en-us/visualstudio/test/how-to-create-a-data-driven-unit-test?view=vs-2022) waren vroeger vooral een dingetje bij MSTest:
+
+```cs
+[DataSource(@"Provider=Microsoft.SqlServerCe.Client.4.0; Data Source=C:\Data\MathsData.sdf;", "Numbers")]
+```
+Maar tegenwoordig hebben ze gewoon `[DataRow()]`
+
+```cs
+// data-driven/parameterized test: verschillende inputs
+// 4 8
+// -4 8
+// -4 -8
+public int Add(int x, int y)
+{
+
+}
+```
+
+Mockframeworks
+- Moq <== guidance framework
+- NSubstitute
+- FakeItEasy <== guidance framework
+- EasyMock
+
