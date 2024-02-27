@@ -19,6 +19,8 @@ public class UnitTest1
 
         _mockCharacterRepository = A.Fake<ICharacterRepository>();
         _mockNationRepository = A.Fake<INationRepository>();
+
+        A.CallTo(() => _mockCharacterRepository.Add(A.Fake<Character>())).DoesNothing();
         
         A.CallTo(() => _mockCharacterRepository.GetAll()).Returns(new List<Character>
         {
@@ -30,7 +32,7 @@ public class UnitTest1
     }
     
     [TestMethod]
-    public void TestMethod1()
+    public void OnGet_Bla()
     {
         // Act doen
         _sut.OnGet();
@@ -38,5 +40,18 @@ public class UnitTest1
         // Assert toetsen
         A.CallTo(() => _mockCharacterRepository.GetAll()).MustHaveHappened();
         Assert.AreEqual(3, _sut.AvatarCharacters.Count());
+    }
+    
+    [TestMethod]
+    public void OnPost_ValidModel()
+    {
+        var aCharacter = A.Fake<Character>();
+        _sut.NewCharacter = aCharacter;
+        
+        // Act doen
+        _sut.OnPost();
+
+        // Assert toetsen
+        A.CallTo(() => _mockCharacterRepository.Add(aCharacter)).MustHaveHappened();
     }
 }
