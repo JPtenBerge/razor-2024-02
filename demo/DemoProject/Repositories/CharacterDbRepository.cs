@@ -22,4 +22,13 @@ public class CharacterDbRepository : ICharacterRepository
         _context.Characters.Add(newCharacter);
         _context.SaveChanges();
     }
+
+    public void Update(Character character)
+    {
+        var charEntity = _context.Characters.Single(x => x.Id == character.Id);
+        charEntity.IsBender = character.IsBender;
+        
+        // _context.Entry<Character>(character).State = EntityState.Modified;
+        _context.SaveChanges();
+    }
 }
