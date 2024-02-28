@@ -1,4 +1,6 @@
-﻿namespace DemoProject.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace DemoProject.Entities;
 
 public class Character
 {
@@ -9,5 +11,7 @@ public class Character
     public string PhotoUrl { get; set; }
 
     public int NationId { get; set; }
+    
+    
     public Nation Nation { get; set; }
 }

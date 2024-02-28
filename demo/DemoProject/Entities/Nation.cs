@@ -1,4 +1,6 @@
-﻿namespace DemoProject.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace DemoProject.Entities;
 
 public class Nation
 {

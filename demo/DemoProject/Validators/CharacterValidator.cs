@@ -13,5 +13,8 @@ public class CharacterValidator : AbstractValidator<Character>
     
         RuleFor(x => x.PhotoUrl)
             .NotEmpty().WithMessage("Vul in aub");
+
+        RuleFor(x => x.NationId)
+            .NotEmpty().WithMessage("Nation graag");
     }
 }

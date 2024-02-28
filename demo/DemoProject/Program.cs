@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using DemoProject.DataAccess;
 using DemoProject.Entities;
 using DemoProject.Middleware;
@@ -23,6 +24,10 @@ builder.Services.AddRazorPages().AddFluentValidation(options =>
     options.DisableDataAnnotationsValidation = true;
 });
 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddDbContext<AvatarContext>(options =>
 {
     options.UseSqlServer("Server=.\\SQLEXPRESS; Database=avatardb; Integrated Security=true; TrustServerCertificate=True");
@@ -36,6 +41,8 @@ app
     .UseDeveloperExceptionPage()
     .UseMijnExceptionLoggingMiddleware() // extension method
     .UseStaticFiles(); // defaults to wwwroot/
+
+app.MapControllers(); // Controllers/  [Route()]  : ControllerBase
 
 app.MapRazorPages(); // Pages/
 
