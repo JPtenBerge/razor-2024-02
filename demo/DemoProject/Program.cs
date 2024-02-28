@@ -31,6 +31,11 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Mijn beste API aller tijden"
     });
 });
+builder.Services.AddMemoryCache();
+// builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession();
+
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -58,6 +63,8 @@ app
     .UseStaticFiles(); // defaults to wwwroot/
 
 app.UseSwagger(); // docs
+
+app.UseSession(); // session cookie uitlezen
 
 if (builder.Environment.IsDevelopment())
 {
