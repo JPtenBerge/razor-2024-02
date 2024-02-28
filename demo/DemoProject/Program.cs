@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using DemoProject.DataAccess;
+using DemoProject.Dtos;
 using DemoProject.Entities;
 using DemoProject.Middleware;
 using DemoProject.Repositories;
@@ -17,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 // grote bouwblokken
 
 builder.Services.AddTransient<MijnExceptionLoggingMiddleware>();
-builder.Services.AddTransient<IValidator<Character>, CharacterValidator>();
+builder.Services.AddTransient<IValidator<CharacterPostRequestDto>, CharacterValidator>();
 // builder.Services.AddSingleton<ICharacterRepository, CharacterRepository>();
 builder.Services.AddTransient<ICharacterRepository, CharacterDbRepository>();
 builder.Services.AddTransient<INationRepository, NationDbRepository>();

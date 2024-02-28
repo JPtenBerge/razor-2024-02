@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using DemoProject.Dtos;
 using DemoProject.Entities;
 using DemoProject.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -36,12 +37,13 @@ public class CharacterController : ControllerBase
     }
     
     [HttpPost]
-    public ActionResult<Character> Post(Character newCharacter)
+    public ActionResult<CharacterPostResponseDto> Post(CharacterPostRequestDto dto)
     {
-        _characterRepository.Add(newCharacter);
+        var character = dto.MapToEntity();
+        _characterRepository.Add(character);
 
         // functional GetById()
-        var fullChar = _characterRepository.GetAll().Single(x => x.Id == newCharacter.Id);
-        return Created("", fullChar); // updated entity
+        var fullChar = _characterRepository.GetAll().Single(x => x.Id == character.Id);
+        return Created("", fullChar.MapToDto()); // updated entity
     }
 }
