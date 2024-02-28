@@ -47,6 +47,7 @@
   - 405 Method Not Allowed  (POST => ...geen POST ondersteunt)
   - 415 Mediatype not supported  (XML => ...die geen XML kan parsen)
   - 418 I'm a teapot
+  - 422 Unprocessable entity - de syntax van het request was prima, maar er is een logisch probleem opgetreden waardoor het niet verder verwerkt kan worden
 * 5xx - SERVER ERROR
   - 500 Internal Server Error
   - 502 Bad Gateway
@@ -311,3 +312,191 @@ app.UseLogger()
   .UseAntiForgeryToken()
   .UseStatusCodePages();
 ```
+
+## Data in view
+
+Arno wilde het lijstje van categorieen uit zijn database in zijn _Layout gebruiken. Mogelijkheden?
+
+- de data doorgeven via `ViewData`
+- een custom view component maken (denk partial view, maar dan met logica)
+- `@RenderSection()`, maar dan moeten alle pagina's die section providen. Niet heel chic.
+- eigen tag helper `<div todo-categories></div>`
+- Met `@inject` de repo injecteren en gewoon de data ophalen. Is niet megachic om dat vanaf de view allerlei database-operaties uit te zetten, maar het werkt wel.
+
+## REST: REpresentational State Transfer
+
+- JSON/XML/...
+- HTTP-header: Accept: application/json, application/xml, text/html, outlook/v-card
+  - JSON
+- bedacht in 2000 door Roy Fielding
+- in theorie los van HTTP, maar praktisch gaat er nagenoeg altijd mee hand in hand
+
+REST draait om resources en HTTP verbs gebruiken om die resources te benaderen. En niet meer het web misbruiken met dit soort url's:
+
+```sh
+GET index.php?action=delete_customer&id=14
+```
+
+verbs:
+- GET ophalen
+- POST aanmaken         /wijzigen
+- PUT wijzigen          /toevoegen
+- DELETE verwijderen
+- PATCH deel wijzigen
+
+```sh
+# 3x POST = 3 nieuwe auto's in het systeem
+POST api/car     { make: '...', model: '...' }
+POST api/car     { make: '...', model: '...' }
+POST api/car     { make: '...', model: '...' }
+
+# 3x PUT  = 1 nieuwe auto in het systeem
+PUT  api/car/15  { make: '...', model: '...' }
+PUT  api/car/15  { make: '...', model: '...' }
+PUT  api/car/15  { make: '...', model: '...' }
+```
+
+Ook wel de idempotency van een request
+
+API testing tools:
+- Postman  druk duurde lang voor dark mode er was
+- Insomnia  dark mode++  
+- Bruno
+- curl
+- Hoppscotch
+- VS Code:
+  - Thunder Client
+  - REST Client - .http .rest
+- Swagger UI
+
+### Object cycles fixen
+
+- DTOs
+- dingen op null zetten/laten
+- configuratie `ReferenceHandler.IgnoreCycles`
+- configuratie `ReferenceHandler.Preserve`
+- `[JsonIgnore]`
+
+### REST maturity levels - RESTful
+
+Zie ook [hier](https://martinfowler.com/articles/richardsonMaturityModel.html)
+
+Meeste APIs doen level 2. Level 3 is Hypermedia As The Engine Of Application State
+
+```json
+// /api/product
+[
+  {
+    "description": "...",
+    "price": 8.99,
+    "links": [
+      { "details": "https://mijndomein.nl/api/product/19" },
+      { "buy": "https://mijndomein.nl/api/product/19/buy" },
+      { "inventory": "https://mijndomein.nl/api/product/19/inventory" },
+      { "related": "https://mijndomein.nl/api/product/19/related" },
+    ]
+  }
+]
+```
+
+Vooral waardevol voor public-facing APIs, om je gebruikers te begeleiden bij het gebruiken van je API.
+
+Wat gebruiksvriendelijkheid van de API betreft, context aanbrengen met je URLs is ook vaak fijn:
+
+* `api/product/18/orders/8985874`
+* `api/customer/JP/aankopen`
+
+### System.Text.Json
+
+De default serializer sinds ASP.NET Core 3.0. 
+
+* ASP.NET Core 1.0  Newtonsoft.Json
+* ASP.NET Core 2.0  Newtonsoft.Json
+* ASP.NET Core 3.0  System.Text.Json
+* ASP.NET Core 5.0  System.Text.Json
+* ASP.NET Core 6.0  System.Text.Json
+* ASP.NET Core 7.0  System.Text.Json
+* ASP.NET Core 8.0  System.Text.Json
+
+Newtonsoft.Json wordt nog steeds wel ondersteund:
+
+```cs
+builder.Services.AddControllers().AddNewtonsoftJson();
+```
+
+System.Text.Json
+- minder scenarios ondersteuning
+- performance daarmee wel beter
+
+### DTOs - Data Transfer Objects
+
+Wat ze oplossen:
+
+- recursie in data
+- geen overbodige data oversturen
+- overPOSTing/underPOSTing
+- specifieke validatie
+
+`BlablaPutRequestMessage` en `BlablaPutResponseMessage`
+
+```sh
+client <========> controller/page => service => service => repo => db
+                            => validators
+    <--- DTO --------------------------->
+```
+
+Vaak moet je DTOs mappen naar entities die in de rest van je architectuur gebruikt worden.
+
+- AutoMapper (gebruikt reflection, hernoemen van properties leidt tot `null` in JSON-output)
+- Mapster (gebruikt reflection, hernoemen van properties leidt tot `null` in JSON-output)
+- Mapperly "creates the mapping code at build time", dat lijkt een prima optie te zijn!
+- Handmatig implementeren. ChatGPT/Copilot maken dit werk minder saai.
+
+### Overige REST-zaken
+
+**Swagger/Open API**
+- Swagger doc - documentatie van je API
+- Swagger UI - API testing tool
+- OpenAPi - de open standaard van API-documentatie zodat er eventueel wat concurrentie in dit landschap kan plaatsvinden.
+
+**Versionering van REST APIs**
+- api/v1/products
+- api/products?v=1
+- custom HTTP header `X-API-VERSION: 1`
+
+Versionering is vooral lastig in verband met alle achterliggende code. Je models, je services, je repositories, je validators, je database. Je wil de APIs zo gescheiden mogelijk van elkaar hebben, maar bij de achterliggende verwerking wil je zo min mogelijke code-duplicatie i.v.m. bugfixing, herbruikbaarheid, etc.
+
+**Alternatieven REST**
+
+* GraphQL: denk aan 100 verschillende soorten clients die allemaal verschillende behoeften hebben wat betreft welke/hoeveel data er wordt teruggestuurd. GraphQL helpt dan dat de client kan aangeven wat hij wil hebben en dat stuurt GraphQL dan op.
+* gRPC - gRPC Remote Procedure Call
+  - protobuf: binair formaat
+  - nuttig bij heule grote hoeveelheden data: begint vanaf 10MB
+  - ook nuttig als serializatie van je data heel lang duurt
+  - veel meer uitdrukkingsvrijheid t.o.v. REST
+  - bidirectioneel streamen mogelijk, REST is request-response
+  - Netflix gebruikt het veel
+  - gebaseerd op HTTP/2, maar wel door dat te cherrypicken - het zijn geen standaard browserberichtjes
+  - complexer om op te zetten vergeleken met 
+  - lastiger te debuggen, want je kan niet makkelijk zien wat voor data er over het lijntje gaat
+  - niet iedere API testing tool heeft ondersteuning voor gRPC-endpoints te testen en meestal moet je nog twee stapjes extra ondernemen om het uberhaupt te kunnen testen
+
+## State
+
+### Caching
+
+- in de cache houden van data
+- database ontlasten
+- resultaat query > cache
+- applicatiebreed, niet gebruikersgebonden
+
+Vormen van cache:
+- in-memory
+- distributed
+- semi-commerciele oplossing  Redis
+
+### Sessions
+
+- server plaatst cookie met daarin een token, het sessietoken
+- client (browser) stuurt bij opvolgende requests iedere keer die cookie met token op
+- server kan dan gebruikersspecifieke info ophalen uit geheugen/database/...waar hij ook maar sessiedata opslaat
