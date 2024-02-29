@@ -500,3 +500,139 @@ Vormen van cache:
 - server plaatst cookie met daarin een token, het sessietoken
 - client (browser) stuurt bij opvolgende requests iedere keer die cookie met token op
 - server kan dan gebruikersspecifieke info ophalen uit geheugen/database/...waar hij ook maar sessiedata opslaat
+
+## Blazor
+
+* Razor, maar dan BETER!
+* Razor == MPA
+* Blazor == SPA
+
+Blazor komt in twee smaken:
+- Blazor WebAssembly
+  - C# ===== compile ====> WebAssembly
+  - WebAssembly is een feature van de browser om low-level code uit te voeren
+  - jouw code draait dus in de browser
+  - uitgekleed .NET moet ook even worden gecompileerd naar WebAssembly
+    - 7MB - het allereerste bezoek
+    - intranet  geen mobile bezoekers
+- Blazor Server
+  - jouw code draait dus op de server
+  - elk klikje/toetsje wordt opgestuurd naar de server over een WebSocket-verbinding
+    - server berekent dan de nieuwe UI state en communiceert dat terug naar de browser
+    - browser voert die updates dan door
+  - relatief kleine hoeveelheid data wat naar de server gaat
+
+Blazor features:
+- Dependency injection
+- Routing
+- Databinding
+- Formuliervalidatie
+- Component-gebaseerde way-of-working
+
+Pijnlijke/lastige zaken:
+- HMR  Hot Module Reloading  "live refresh" "hot reload"
+- .razor want Blazor
+- builddingetjes toevoegen
+  - SCSS
+  - tailwind
+  - ...
+
+Change detection van frameworks:
+- Angular: magie - geavanceerd mechanisme  events + zone.js `setTimeout` `setInterval`
+- Vue: `Proxy`
+- React: `.setState()`
+- Svelte: assignment detection  bla = bla;
+- Blazor: iets minder geavanceerd mechanisme tov Angular - haakt in op events en checkt daarna of er data veranderd is t.o.v. wat er in de DOM gebind is
+
+## Hoe updaten we na een POST die lijst van todos?
+
+(deze lijst houdt nog geen rekening met concurrency)
+
+1. Opnieuw alles GETten
+   - nadeel: gebruiker moet TWEE requests afwachten
+   - nadeel: maximaal belastend voor je server
+   - voordeel: meest in sync met server
+   - voordeel: vaak het gemakkelijkst te implementeren  .getAll()
+2. Update meegeven bij response van POST 
+   - updated entity/volledige lijst
+   - nadeel: gebruiker moet de POST afwachten
+   - voordeel: redelijk snel
+   - voordeel: updated entity => redelijk in sync met server
+3. jouw formdata gewoon rechtstreeks in je lokale lijst gooien
+   - voordeel: snel!
+   - nadeel: niet up-to-date. id
+   - nadeel: server errors? sterk communiceren wat de state is van het item
+   - naam: Optimistic UI
+
+```cs
+var updatedCharacter = await "api/character"
+  .PostJsonAsync(NewCharacter)
+  .ReceiveJson<Character>();
+AvatarCharacters.Add(updatedCharacter);
+```
+
+## Realtime communication
+
+Realtime apps
+
+- whatsapp
+- multiplayer gaming
+- stock market
+- nieuws
+- streaming
+- pipeline
+
+Introducing, the WebSocket:
+- ~2012
+- gebaseerd op TCP
+- verbinding kan heeeel lang open blijven staan
+- na een berichtje blijft de verbinding open
+
+SignalR
+- wrapper-class om WebSocket heen
+- makkelijke interface - data over het lijntje: objecten, strings, allesch
+- reconnecten
+- "functioneel realtime" - websocket (TCP) - long polling - webtransport (UDP) in de toekomst?
+- groeperen
+
+## CORS - Cross Origin Resource Sharing
+
+- andere hostnames => andere poorten, domein, subdomein
+- beveiligingsfeature: browser checkt of server het OK vindt om vanaf een ander domein aangeroepen te worden.
+- bij een data-muterende actie stuurt de browser eerst een OPTIONS-request om te checken of CORS-headers aanwezig zijn. bij een GET checkt hij de header van die response of het verwerkt mag worden door client-code.
+  ```sh
+  GET => server
+
+  OPTIONS => server
+  POST => server
+
+  OPTIONS => server
+  PUT => server
+
+  OPTIONS => server
+  PATCH => server
+
+  OPTIONS => server
+  DELETE => server
+  ```
+
+## Backend For Frontend
+
+wat een BFF allemaal voor je kan doen:
+- requests doorsluizen naar de rest van je deployment infrastructuur/microservices
+  - reverse proxy
+- CORS: backend serveert jouw frontend, daarmee dus zelfde hostname! whoo!
+- jouw SPA serveren middels SSR
+- caching
+- authenticatie/autorisatie
+- load balancer
+- JWTs veilig opslaan
+
+## JWT opslaan zonder BFF
+
+Waar sla je dat JWT **in de browser** op?
+- cookies: HttpOnly  XSRF - mogelijk lost same-site origin dat op?
+- sessionStorage: XSS
+- localStorage: XSS
+- indexedDB: XSS
+- variabele in-memory (closure) - op zich veilig, maar druk op F5 en je bent uitgelogd
