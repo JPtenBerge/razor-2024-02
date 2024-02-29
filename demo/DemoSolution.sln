@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoProject.Tests", "DemoPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoProject.FakingAmazing", "DemoProject.FakingAmazing\DemoProject.FakingAmazing.csproj", "{0CDC8011-9756-4905-A0A1-F8043D422263}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoBalzor", "DemoBalzor\DemoBalzor.csproj", "{549297AD-E408-48AD-8B35-ECCE340A993D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Shared", "Demo.Shared\Demo.Shared.csproj", "{D5869436-FC5E-4A4A-8F5B-DFE5C58591A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{0CDC8011-9756-4905-A0A1-F8043D422263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CDC8011-9756-4905-A0A1-F8043D422263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CDC8011-9756-4905-A0A1-F8043D422263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{549297AD-E408-48AD-8B35-ECCE340A993D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{549297AD-E408-48AD-8B35-ECCE340A993D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{549297AD-E408-48AD-8B35-ECCE340A993D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{549297AD-E408-48AD-8B35-ECCE340A993D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5869436-FC5E-4A4A-8F5B-DFE5C58591A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5869436-FC5E-4A4A-8F5B-DFE5C58591A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5869436-FC5E-4A4A-8F5B-DFE5C58591A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5869436-FC5E-4A4A-8F5B-DFE5C58591A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

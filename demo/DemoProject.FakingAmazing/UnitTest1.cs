@@ -1,4 +1,4 @@
-using DemoProject.Entities;
+using Demo.Shared.Entities;
 using DemoProject.Pages;
 using DemoProject.Repositories;
 using FakeItEasy;

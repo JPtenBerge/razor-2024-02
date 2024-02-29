@@ -1,6 +1,6 @@
-﻿using DemoProject.Entities;
+﻿using Demo.Shared.Entities;
 
-namespace DemoProject.Dtos;
+namespace Demo.Shared.Dtos;
 
 public class CharacterPostResponseDto
 {

@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 using DemoProject.DataAccess;
-using DemoProject.Dtos;
-using DemoProject.Entities;
+using Demo.Shared.Dtos;
+using Demo.Shared.Entities;
 using DemoProject.Middleware;
 using DemoProject.Repositories;
-using DemoProject.Validators;
+using Demo.Shared.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;

@@ -1,8 +1,7 @@
-﻿using DemoProject.Dtos;
-using DemoProject.Entities;
+﻿using Demo.Shared.Dtos;
 using FluentValidation;
 
-namespace DemoProject.Validators;
+namespace Demo.Shared.Validators;
 
 public class CharacterValidator : AbstractValidator<CharacterPostRequestDto>
 {

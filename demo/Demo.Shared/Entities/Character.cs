@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DemoProject.Entities;
+﻿namespace Demo.Shared.Entities;
 
 public class Character
 {

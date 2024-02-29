@@ -1,0 +1,82 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Naam: @Name
+
+<button @onclick="ChangeName">Verander naam</button>
+
+
+
+<form method="post">
+    <ol>
+        <li>
+            <label for="input-name">Naam:</label>
+            <input id="input-name" asp-for="NewCharacter.Name"/>
+            <span asp-validation-for="NewCharacter.Name"></span>
+        </li>
+        <li>
+            <label for="input-is-bender">Kan benden?</label>
+            <input type="checkbox" id="input-is-bender" asp-for="NewCharacter.IsBender"/>
+            <span asp-validation-for="NewCharacter.IsBender"></span>
+        </li>
+        <li>
+            <label>Elementen:</label>
+            @* <select multiple> *@
+            @*     <option>Earth</option> *@
+            @*     <option>Air</option> *@
+            @*     <option>Fire</option> *@
+            @*     <option>Water</option> *@
+            @* </select> *@
+        </li>
+        <li>
+            <label for="input-photo-url">Foto URL:</label>
+            <input type="url" id="input-photo-url" asp-for="NewCharacter.PhotoUrl"/>
+            <span asp-validation-for="NewCharacter.PhotoUrl"></span>
+        </li>
+        <li>
+            <label id="input-nation">Natie:</label>
+            <select asp-items="Model.NationOptions" asp-for="NewCharacter.NationId"></select>
+        </li>
+        <li>
+            <button>Add character</button>
+        </li>
+    </ol>
+</form>
+
+@if (AvatarCharacters == null || !AvatarCharacters.Any())
+{
+    <p>Geen data.</p>
+}
+else
+{
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Naam</th>
+            <th>Kan benden</th>
+            <th>Elementen</th>
+            <th>Natie</th>
+            <th>Fotootje</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var character in AvatarCharacters)
+        {
+            <tr>
+                <td>@character.Id</td>
+                <td>@character.Name</td>
+                <td>@character.IsBender</td>
+                <td>@(character.Elements == null ? "niks" : string.Join(", ", character.Elements))</td>
+                <td>@character.Nation?.Name</td>
+                <td>
+                    <img src="@character.PhotoUrl">
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

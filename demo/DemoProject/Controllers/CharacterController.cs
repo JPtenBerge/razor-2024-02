@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using DemoProject.Dtos;
-using DemoProject.Entities;
+using Demo.Shared.Dtos;
+using Demo.Shared.Entities;
 using DemoProject.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
