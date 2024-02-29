@@ -37,9 +37,9 @@ We gaan een todo-applicatie maken.
 
 11. Cache je todos.
 
-12. Onze todo-app wordt gebruikt door hele families! Sla bij elke todo op welk familielid de todo heeft toegevoegd. Men mag dus enkel todo's toevoegen als men is ingelogd. In de lijst van todo's, toon de naam van het familielid die de todo heeft toegevoegd.
+12. Maak een Blazor WebAssembly-project die de todo's ophaalt en weergeeft van de server.
 
-13. Maak een Blazor WebAssembly-project die de todo's ophaalt en weergeeft van de server.
+13. Onze todo-app wordt gebruikt door hele families! Sla bij elke todo op welk familielid de todo heeft toegevoegd. Men mag dus enkel todo's toevoegen als men is ingelogd. In de lijst van todo's, toon de naam van het familielid die de todo heeft toegevoegd.
 
 14. Als een ander familielid todo's toevoegt, zouden deze instant zichtbaar moeten zijn voor alle andere familieleden. Gebruik SignalR om je app realtime te maken.
    
