@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using DemoProject.DataAccess;
 using Demo.Shared.Dtos;
@@ -24,6 +25,15 @@ builder.Services.AddTransient<ICharacterRepository, CharacterDbRepository>();
 builder.Services.AddTransient<INationRepository, NationDbRepository>();
 builder.Services.AddRazorPages().AddFluentValidation(options => { options.DisableDataAnnotationsValidation = true; });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("blazorfrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5080").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+    });
+});
+
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo()
@@ -37,15 +47,16 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
-
-//     .AddJsonOptions(options =>
+//     .AddNewtonsoftJson(options =>
 // {
-//     // options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+//     // options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 // });
+
+
 builder.Services.AddDbContext<AvatarContext>(
     options =>
     {
@@ -61,6 +72,8 @@ app
     .UseDeveloperExceptionPage()
     .UseMijnExceptionLoggingMiddleware() // extension method
     .UseStaticFiles(); // defaults to wwwroot/
+
+app.UseCors("blazorfrontend");
 
 app.UseSwagger(); // docs
 

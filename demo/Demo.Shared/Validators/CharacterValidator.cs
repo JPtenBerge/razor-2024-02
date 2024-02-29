@@ -14,7 +14,7 @@ public class CharacterValidator : AbstractValidator<CharacterPostRequestDto>
         RuleFor(x => x.PhotoUrl)
             .NotEmpty().WithMessage("Vul in aub");
 
-        RuleFor(x => x.NationId)
-            .NotEmpty().WithMessage("Nation graag");
+        // RuleFor(x => x.NationId)
+        //     .NotEmpty().WithMessage("Nation graag");
     }
 }

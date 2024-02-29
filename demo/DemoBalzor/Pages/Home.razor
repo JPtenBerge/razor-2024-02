@@ -10,17 +10,19 @@ Naam: @Name
 
 
 
-<form method="post">
+<EditForm Model="NewCharacter" OnValidSubmit="AddCharacter">
+    <FluentValidationValidator />
+    
     <ol>
         <li>
             <label for="input-name">Naam:</label>
-            <input id="input-name" asp-for="NewCharacter.Name"/>
-            <span asp-validation-for="NewCharacter.Name"></span>
+            <input id="input-name" @bind-value="NewCharacter.Name"/>
+            <ValidationMessage For="() => NewCharacter.Name"/>
         </li>
         <li>
             <label for="input-is-bender">Kan benden?</label>
-            <input type="checkbox" id="input-is-bender" asp-for="NewCharacter.IsBender"/>
-            <span asp-validation-for="NewCharacter.IsBender"></span>
+            <input type="checkbox" id="input-is-bender" @bind-value="NewCharacter.IsBender"/>
+            <ValidationMessage For="() => NewCharacter.IsBender"/>
         </li>
         <li>
             <label>Elementen:</label>
@@ -33,8 +35,8 @@ Naam: @Name
         </li>
         <li>
             <label for="input-photo-url">Foto URL:</label>
-            <input type="url" id="input-photo-url" asp-for="NewCharacter.PhotoUrl"/>
-            <span asp-validation-for="NewCharacter.PhotoUrl"></span>
+            <input type="url" id="input-photo-url" @bind-value="NewCharacter.PhotoUrl" @bind-value:event="oninput"/>
+            <ValidationMessage For="() => NewCharacter.PhotoUrl"/>
         </li>
         <li>
             <label id="input-nation">Natie:</label>
@@ -43,8 +45,11 @@ Naam: @Name
         <li>
             <button>Add character</button>
         </li>
+        <li>
+            @JsonSerializer.Serialize(NewCharacter)
+        </li>
     </ol>
-</form>
+</EditForm>
 
 @if (AvatarCharacters == null || !AvatarCharacters.Any())
 {

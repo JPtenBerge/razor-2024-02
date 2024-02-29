@@ -1,43 +1,32 @@
-﻿using Demo.Shared.Entities;
+﻿using System.Collections;
+using System.Net.Http.Json;
+using Demo.Shared.Dtos;
+using Demo.Shared.Entities;
+using Flurl.Http;
 using Microsoft.AspNetCore.Components;
 
 namespace DemoBalzor.Pages;
 
 public partial class Home : ComponentBase
 {
+    // [Inject] public HttpClient Http { get; set; }
+
     public string Name { get; set; } = "Arno 2";
 
-    public List<Character>? AvatarCharacters { get; set; } = new List<Character>()
+    public CharacterPostRequestDto NewCharacter { get; set; } = new();
+
+    public List<Character>? AvatarCharacters { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
     {
-        new()
-        {
-            Id = 4,
-            Name = "Aang",
-            IsBender = true,
-            Elements = { "Earth", "Air", "Fire", "Water" },
-            PhotoUrl =
-                "https://oyster.ignimgs.com/mediawiki/apis.ign.com/avatar-the-last-airbender/b/b0/Aang_img.jpg?width=325"
-        },
-        new()
-        {
-            Id = 8,
-            Name = "Sokka",
-            IsBender = false,
-            Elements = null,
-            PhotoUrl =
-                "https://oyster.ignimgs.com/mediawiki/apis.ign.com/avatar-the-last-airbender/a/ad/Sokka_img.jpg?width=325"
-        },
-        new()
-        {
-            Id = 15,
-            Name = "Katara",
-            IsBender = true,
-            Elements = { "Water" },
-            PhotoUrl =
-                "https://pics.craiyon.com/2023-10-02/bb59b64d2b7b4262bba96d775dcc2e3a.webp"
-        }
-    };
-    
+        // AvatarCharacters = (await Http.GetFromJsonAsync<IEnumerable<Character>>("api/character"))!.ToList();
+        AvatarCharacters = (await "http://localhost:5074/api/character".GetJsonAsync<IEnumerable<Character>>()).ToList();
+
+        // Http.PutAsJsonAsync<CharacterPostRequestDto>("api/product", NewCharacter);
+    }
+
+
     void ChangeName()
     {
         Name += "Jurre";
@@ -47,12 +36,19 @@ public partial class Home : ComponentBase
         //     Console.WriteLine("hallo vanaf thread");
         // });
         // t.Start();
-        
+
         new Timer(new TimerCallback(_ => // vertaald naar setInterval()
         {
             Console.WriteLine("hoi!");
             Name += "q";
             StateHasChanged();
         }), null, 1000, 1000);
+    }
+
+    void AddCharacter()
+    {
+        Console.WriteLine("Addding! " + NewCharacter.Name + " kan benden: " + NewCharacter.IsBender);
+
+        AvatarCharacters.Add(NewCharacter.MapToEntity());
     }
 }
