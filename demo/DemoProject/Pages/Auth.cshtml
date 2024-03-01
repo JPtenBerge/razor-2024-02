@@ -1,0 +1,17 @@
+﻿@page
+@model DemoProject.Pages.Auth
+
+<h1>Auth</h1>
+
+<dl>
+    <dt>Status</dt>
+    <dd>@Model.Status</dd>
+    <dt>Ingelogd als</dt>
+    <dd>@(User.Identity!.IsAuthenticated ? User.Identity.Name : "niet ingelogd")</dd>
+</dl>
+
+<a asp-page-handler="Register">Register</a> |
+<a asp-page-handler="Login">Log in</a> |
+<a asp-page-handler="Logout">Log uit</a> |
+<a asp-page-handler="DoNothing">Doe niks</a>
+

@@ -6,9 +6,11 @@ using Demo.Shared.Entities;
 using DemoProject.Middleware;
 using DemoProject.Repositories;
 using Demo.Shared.Validators;
+using DemoProject;
 using DemoProject.Hubs;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -18,6 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 // globale instellingen
 // dependency injection
 // grote bouwblokken
+
+builder.Services.AddIdentity<AvatarUser, IdentityRole>().AddEntityFrameworkStores<AvatarContext>();
 
 builder.Services.AddTransient<MijnExceptionLoggingMiddleware>();
 builder.Services.AddTransient<IValidator<CharacterPostRequestDto>, CharacterValidator>();
@@ -76,6 +80,9 @@ app
     .UseStaticFiles(); // defaults to wwwroot/
 
 app.UseCors("blazorfrontend");
+
+app.UseAuthentication(); // leest auth cookie uit
+app.UseAuthorization();
 
 app.UseSwagger(); // docs
 

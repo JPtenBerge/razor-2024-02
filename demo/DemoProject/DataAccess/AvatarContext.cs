@@ -1,9 +1,10 @@
 ﻿using Demo.Shared.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DemoProject.DataAccess;
 
-public class AvatarContext : DbContext
+public class AvatarContext : IdentityDbContext<AvatarUser>
 {
     public DbSet<Character> Characters { get; set; }
     
@@ -16,6 +17,7 @@ public class AvatarContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // modelBuilder.ApplyConfiguration(new CharacterConfiguration());
+        base.OnModelCreating(modelBuilder);
         
         modelBuilder.Entity<Character>()
             .Property(x => x.Name)
