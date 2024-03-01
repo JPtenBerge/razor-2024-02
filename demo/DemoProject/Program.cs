@@ -62,12 +62,14 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 //     // options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 // });
 
+var connString = Environment.GetEnvironmentVariable("connstring");
+connString ??= builder.Configuration.GetConnectionString("AvatarContext");
+Console.WriteLine("Using connection string: " + connString);
 
 builder.Services.AddDbContext<AvatarContext>(
     options =>
     {
-        options.UseSqlServer(
-            "Server=.\\SQLEXPRESS; Database=avatardb; Integrated Security=true; TrustServerCertificate=True");
+        options.UseSqlServer(connString);
     }, ServiceLifetime.Transient);
 
 var app = builder.Build();
