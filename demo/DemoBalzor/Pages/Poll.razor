@@ -2,6 +2,20 @@
 <h3>Poll</h3>
 
 <h4>Actieve poll</h4>
+@if (ActivePoll == null)
+{
+    <p>Nog geen poll.</p>
+}
+else
+{
+    <h5>@ActivePoll.Question (@ActivePoll.TotalNrOfVotes)</h5>
+    <ol>
+        @foreach (var option in ActivePoll.Options)
+        {
+            <li @onclick="() => Vote(option)">@option.Option (@option.NrOfVotes)</li>
+        }
+    </ol>
+}
 
 <h4>Nieuwe poll</h4>
 <EditForm Model="NewPoll" OnSubmit="InitPoll">

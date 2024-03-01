@@ -6,6 +6,7 @@ using Demo.Shared.Entities;
 using DemoProject.Middleware;
 using DemoProject.Repositories;
 using Demo.Shared.Validators;
+using DemoProject.Hubs;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSignalR();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -83,6 +85,8 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseSwaggerUI(); // UI
 }
+
+app.MapHub<PollHub>("/pollHub");
 
 app.MapControllers(); // Controllers/  [Route()]  : ControllerBase
 

@@ -7,4 +7,6 @@ public class PollModel
     public string Question { get; set; }
 
     public IEnumerable<OptionModel> Options { get; set; }
+    
+    public int TotalNrOfVotes { get; set; }
 }

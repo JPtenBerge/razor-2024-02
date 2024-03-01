@@ -7,7 +7,10 @@ namespace DemoBalzor.Pages;
 public partial class Poll : ComponentBase
 {
     private HubConnection _connection;
-        
+    
+    public PollModel NewPoll { get; set; } = new();
+    public PollModel? ActivePoll { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
         // init form stuff
@@ -21,15 +24,34 @@ public partial class Poll : ComponentBase
         // setup signalr connection
         _connection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5074/pollHub")
+            .ConfigureLogging(logging =>
+            {
+                logging.SetMinimumLevel(LogLevel.Debug);
+            })
             .Build();
+        _connection.On("init-poll", (PollModel poll) =>
+        {
+            ActivePoll = poll;
+            StateHasChanged();
+        });
+        _connection.On("vote", (int optionId) =>
+        {
+            ActivePoll.TotalNrOfVotes++;
+            ActivePoll.Options.Single(x => x.Id == optionId).NrOfVotes++;
+            StateHasChanged();
+        });
         await _connection.StartAsync();
-        // .ConfigureLogging(Logging)
+        
     }
 
-    public PollModel NewPoll { get; set; } = new();
 
     async Task InitPoll()
     {
-        await _connection.SendAsync("initPoll", NewPoll);
+        await _connection.SendAsync("InitPoll", NewPoll);
+    }
+
+    async Task Vote(OptionModel option)
+    {
+        await _connection.SendAsync("vote", option.Id);
     }
 }
