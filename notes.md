@@ -636,3 +636,69 @@ Waar sla je dat JWT **in de browser** op?
 - localStorage: XSS
 - indexedDB: XSS
 - variabele in-memory (closure) - op zich veilig, maar druk op F5 en je bent uitgelogd
+
+## Are we done testing?
+
+Right BICEP:
+
+* Right - are the results correct -right?
+* Boundary
+* Inversion ...
+* Cross-check results
+* Exception forceren
+* Performance
+
+mutation testing: test your tests
+
+```cs
+if (x > 4) { } // production code
+
+if (x == 4) { } // mutant
+if (x < 4) { } // mutant
+if (x > 4000) { } // mutant
+```
+
+zie ook ons huiseigen Stryker.
+
+## Deployment
+
+- filesystem:
+  - dotnet publish -c Release
+  - webserver met .NET-ondersteuning
+    - Kestrel
+    - Internet Information Services
+    - nginx
+    - Apache
+- cloud: Azure/AWS
+- Docker
+
+### Docker
+
+Containerization of software
+
+Ontwikkel - Test - Acceptatie - Productie
+
+- handmatige acties
+- "integrator"
+
+orchestrator
+- kubernetes k8s
+- docker-compose
+- swarm
+
+Docker vs Virtual machine?
+
+docker terminologie:
+- image: file die bepaalt wat er in je container zit
+- container: een runnend image
+- Dockerfile - instructies voor het maken van een image.
+
+Project + Dockerfile > docker build => image
+```sh
+docker run <imagenaam> - container
+docker run <imagenaam> - container
+docker run <imagenaam> - container
+docker run <imagenaam> - container
+docker run <imagenaam> - container
+docker run <imagenaam> - container
+```
